@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
   const result = streamObject({
     model: google("gemini-1.5-pro-latest", {
-      //apiKey: "AIzaSyCnGW8D-kJjQEFXOgG6SC2DSTkAVPnhWOo"
+      apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY
     }),
     messages: [
       {
