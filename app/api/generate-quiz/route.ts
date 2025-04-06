@@ -9,13 +9,7 @@ export async function POST(req: Request) {
   const firstFile = files[0].data;
 
   const result = streamObject({
-<<<<<<< Updated upstream
-    model: google("gemini-1.5-pro-latest", {
-      apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY
-    }),
-=======
     model: google("gemini-1.5-pro-latest"),
->>>>>>> Stashed changes
     messages: [
       {
         role: "system",
