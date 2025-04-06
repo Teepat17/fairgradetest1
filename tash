@@ -1,0 +1,37 @@
+[1mdiff --git a/app/api/generate-quiz/route.ts b/app/api/generate-quiz/route.ts[m
+[1mindex 28a5a67..6d9bff3 100644[m
+[1m--- a/app/api/generate-quiz/route.ts[m
+[1m+++ b/app/api/generate-quiz/route.ts[m
+[36m@@ -9,21 +9,19 @@[m [mexport async function POST(req: Request) {[m
+   const firstFile = files[0].data;[m
+ [m
+   const result = streamObject({[m
+[31m-    model: google("gemini-1.5-pro-latest", {[m
+[31m-      //apiKey: "AIzaSyCnGW8D-kJjQEFXOgG6SC2DSTkAVPnhWOo"[m
+[31m-    }),[m
+[32m+[m[32m    model: google("gemini-1.5-pro-latest"),[m
+     messages: [[m
+       {[m
+         role: "system",[m
+         content:[m
+[31m-          "You are a teacher. Your job is to take a document, and create a multiple choice test (with 4 questions) based on the content of the document. Each option should be roughly equal in length.",[m
+[32m+[m[32m          "You are a teacher. Your job is to take a document, and create a multiple choice test (with 4 questions) based on the content of the document. Each option should be roughly equal in length. IMPORTANT: You must return exactly 4 questions in the format specified by the schema. Each question must have exactly 4 options labeled A, B, C, D. The answer field must be one of: 'A', 'B', 'C', 'D'.",[m
+       },[m
+       {[m
+         role: "user",[m
+         content: [[m
+           {[m
+             type: "text",[m
+[31m-            text: "Create a multiple choice test based on this document.",[m
+[32m+[m[32m            text: "Create a multiple choice test based on this document. Return exactly 4 questions with 4 options each. Make sure the answer field is one of: 'A', 'B', 'C', 'D'.",[m
+           },[m
+           {[m
+             type: "file",[m
+[36m@@ -38,6 +36,7 @@[m [mexport async function POST(req: Request) {[m
+     onFinish: ({ object }) => {[m
+       const res = questionsSchema.safeParse(object);[m
+       if (res.error) {[m
+[32m+[m[32m        console.error("Schema validation error:", res.error.errors);[m
+         throw new Error(res.error.errors.map((e) => e.message).join("\n"));[m
+       }[m
+     },[m
